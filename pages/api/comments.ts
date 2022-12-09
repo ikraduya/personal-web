@@ -1,9 +1,10 @@
 import { GraphQLClient, gql } from "graphql-request";
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
-const graphcmsToken = process.env.GRAPHCMS_TOKEN;
+const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT || '';
+const graphcmsToken = process.env.GRAPHCMS_TOKEN || '';
 
-export default async function comments(req, res) {
+export default async function comments(req : NextApiRequest, res : NextApiResponse) {
   const {name, email, slug, comment} = req.body;
 
   const graphqlClient = new GraphQLClient(graphqlAPI, {
