@@ -5,7 +5,7 @@ const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 export const getPosts = async () => {
     const query = gql`
         query GetPosts {
-            postsConnection {
+            postsConnection (orderBy: createdAt_DESC) {
                 edges {
                     node {
                         author {
@@ -71,11 +71,28 @@ export const getPostDetails = async (slug) => {
     return result.post;
 };
 
+export const getAuthorDetails = async () => {
+    const query = gql`
+        query GetAuthorDetails {
+            authors {
+                name
+                bio
+                photo {
+                    url
+                }
+            }
+        }
+    `
+
+    const result = await request(graphqlAPI, query)
+    return (result.authors && result.authors[0]) || {};
+};
+
 export const getRecentPosts = async() => {
     const query = gql`
         query GetPostDetails() {
             posts(
-                orderBy: createdAt_ASC
+                orderBy: createdAt_DESC
                 last: 3
             ) {
                 title
